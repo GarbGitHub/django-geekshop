@@ -120,6 +120,8 @@ USE_TZ = False
 
 STATIC_URL = '/static/'  # Путь к статике из браузера
 
+# STATIC_ROOT = '' для боевого сервера
+
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'geekshop', 'static'),  # Путь к статике на сервере
 )
