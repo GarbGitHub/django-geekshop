@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>{% if title %} {{ title|title }} {% else %} Geekshop {% endif %}</title>
+    {% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.css' %}">
+    {% endblock %}
+</head>
+<body>
+<div class="container">
+    {% block top %}
+    {% endblock %}
+    {% block content %}
+    {% endblock %}
+</div>
+{% include 'geekshop/includes/inc_footer.html' %}
+</body>
+</html>
