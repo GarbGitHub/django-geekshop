@@ -19,11 +19,9 @@ from django.urls import path, include
 from geekshop import views
 from mainapp import urls
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('products/', include(urls)),
-    # path('', include(urls)),
-    path('', views.index),
-    path('contacts/', views.contacts),
+    path('', views.index, name='index'),
+    path('contacts/', views.contacts, name='contacts'),
+    path('products/', include(urls, namespace='mainapp'), name='index'),
 ]
