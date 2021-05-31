@@ -66,6 +66,6 @@ class Product(models.Model):
         default=0
     )
 
+    created = models.DateTimeField(auto_now_add=True)
 
-
-
+    update = models.DateTimeField(auto_now=True)
