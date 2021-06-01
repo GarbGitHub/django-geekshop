@@ -22,6 +22,10 @@ class ProductCategory(models.Model):
     def __str__(self):
         return f'{self.name} id: {self.id} -- {self.created}'
 
+    class Meta:
+        verbose_name = 'категория',
+        verbose_name_plural = 'категории'
+
 
 # python manage.py makemigrations
 # python manage.py migrate
@@ -69,3 +73,10 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     update = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.name} id: {self.id} -- {self.created}'
+
+    class Meta:
+        verbose_name = 'продукт',
+        verbose_name_plural = 'продукты'
