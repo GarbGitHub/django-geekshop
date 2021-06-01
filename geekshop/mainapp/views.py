@@ -21,7 +21,9 @@ def products(request, pk=None):
     template = 'mainapp/products.html'
 
     if pk:
-        context['product'] = Product.objects.get(pk=pk)
+        obj = Product.objects.get(pk=pk)
+        context['product'] = obj
+        context['title'] = obj.name
         template = 'mainapp/product-card.html'
 
     return render(request, template, context=context)
