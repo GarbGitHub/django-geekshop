@@ -4,7 +4,7 @@
         <li><a href="{% url 'index' %}" class="{% if request.resolver_match.view_name == 'index' %}
             active
         {% endif %}">домой</a></li>
-        <li><a href="{% url 'mainapp:index' %}"  class="{% if request.resolver_match.view_name == 'mainapp:index' %}
+        <li><a href="{% url 'products:index' %}"  class="{% if request.resolver_match.view_name == 'mainapp:index' %}
             active
         {% endif %}">продукты</a></li>
         <li><a href="{% url 'contacts' %}" class="{% if request.resolver_match.view_name == 'contacts' %}
