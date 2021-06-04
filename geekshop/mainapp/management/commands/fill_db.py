@@ -2,7 +2,7 @@ import json
 import os
 from geekshop.config import SUPER_USER_LOGIN, SUPER_USER_EMAIL, SUPER_USER_PASSWORD
 
-from django.contrib.auth.models import User
+from authapp.models import ShopUser
 from django.core.management.base import BaseCommand
 
 from mainapp.models import ProductCategory, Product
@@ -38,7 +38,7 @@ class Command(BaseCommand):
             new_product.save()
 
         # Создаем суперпользователя при помощи менеджера модели
-        User.objects.create_superuser(SUPER_USER_LOGIN, SUPER_USER_EMAIL, SUPER_USER_PASSWORD)
+        ShopUser.objects.create_superuser(SUPER_USER_LOGIN, SUPER_USER_EMAIL, SUPER_USER_PASSWORD, age='22', )
 
 # manage.py dumpdata > db.json  # Все таблицы
 # manage.py dumpdata mainapp.productcategory > mainapp/json/categories.json
