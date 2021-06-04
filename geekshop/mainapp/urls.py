@@ -4,7 +4,7 @@ from .views import products
 app_name = 'mainapp'  # для работы 'namespace=' в geekshop/urls.py
 
 urlpatterns = [
-    path('', products, name='index'),
+    path('', products, name='products'),
     path('product/<int:pk>', products, name='product'),
     path('products_all/', products, name='products_all'),
     path('products_home/', products, name='products_home'),
