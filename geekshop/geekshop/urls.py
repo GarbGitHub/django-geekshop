@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from mainapp import urls
+from mainapp import urls as main_urls
+from authapp import urls as auth_urls
 from . import views
 
 from django.conf import settings
@@ -23,9 +24,12 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('', views.index, name='index'),
+    path('products/', include(main_urls, namespace='products')),
+    path('auth/', include(auth_urls, namespace='auth')),
+
     path('contacts/', views.contacts, name='contacts'),
-    path('products/', include(urls, namespace='products'), name='index'),
 ]
 
 if settings.DEBUG:
