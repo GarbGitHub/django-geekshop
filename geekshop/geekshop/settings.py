@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mainapp',
+    'authapp',
 ]
+
+AUTH_USER_MODEL = 'authapp.ShopUser'  # чтобы Django вместо модели User использовал в аутентификации нашу модель.
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
