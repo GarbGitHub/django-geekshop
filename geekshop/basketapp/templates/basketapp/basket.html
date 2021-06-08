@@ -1,0 +1,47 @@
+{% extends 'geekshop/base.html' %}
+{% load static %}
+{% block top %}
+<div class="hero">
+    {% include 'basketapp/includes/inc_basket.html' %}
+    {% include 'geekshop/includes/inc_main_menu.html' %}
+    <h1>{{ title }}</h1>
+</div>
+{% endblock %}
+{% block content %}
+<div class="basket-tbl">
+    {% if user.is_authenticated %}
+    <table class="table mt-3">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Название</th>
+            <th scope="col">Количество</th>
+            <th scope="col">Цена за ед.</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in basket %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity}}</td>
+            <td>{{ item.product.price}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <th colspan="2">Итого</th>
+            <td>{{ count_products }}</td>
+            <td>{{ total_price }}</td>
+        </tr>
+        </tfoot>
+    </table>
+    {% else %}
+    <div class="alert alert-primary mt-4" role="alert">
+        Корзина пуста. Авторизуйтесь или зарегистрируйтесь, что бы начать совершать покупки
+    </div>
+    {% endif %}
+</div>
+<div class="clr"></div>
+{% endblock%}

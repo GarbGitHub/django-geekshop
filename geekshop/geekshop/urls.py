@@ -17,6 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 from mainapp import urls as main_urls
 from authapp import urls as auth_urls
+
+from basketapp import urls as basket_urls
+# path('basket/', include(basket_urls), namespace='basket'),
+# TypeError: _path() got an unexpected keyword argument 'namespace'
+
 from . import views
 
 from django.conf import settings
@@ -28,6 +33,8 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('products/', include(main_urls, namespace='products')),
     path('auth/', include(auth_urls, namespace='auth')),
+    # path('basket/', include('basketapp.urls', namespace='basket')),
+    path('basket/', include(basket_urls, namespace='basket')),  # error
 
     path('contacts/', views.contacts, name='contacts'),
 ]

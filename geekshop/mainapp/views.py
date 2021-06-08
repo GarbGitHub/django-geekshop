@@ -1,10 +1,23 @@
 from django.shortcuts import render, get_object_or_404
+
+from basketapp.models import Basket
 from .models import Product, ProductCategory
 
 
 def products(request, pk=None):
-    title = 'каталог товаров'
+    title = 'Каталог товаров '
     links_menu = ProductCategory.objects.all()
+    basket = []
+    count_products = 0
+    total_price = 0
+
+    if request.user.is_authenticated:
+        basket = Basket.objects.filter(user=request.user)
+
+        # Подсчет количества и общей суммы №7*
+        for item in basket:
+            count_products += item.quantity
+            total_price += (item.product.price * item.quantity)
 
     if pk is not None:
         if pk == 0:
@@ -13,45 +26,29 @@ def products(request, pk=None):
         else:
             category = get_object_or_404(ProductCategory, pk=pk)
             product = Product.objects.filter(category__pk=pk).order_by('price')
+            title = f'Категория: "{category.name}"'  # title, H2 Категория: "Дом"
 
         context = {
             'title': title,
             'links_menu': links_menu,
             'category': category,
             'products': product,
+            'basket': basket,
+            'count_products': count_products,
+            'total_price': total_price,
+
         }
 
-        return render(request, 'mainapp/products_list.html', context)
+        return render(request, 'mainapp/products.html', context)
 
     product = Product.objects.all()
-
     context = {
         'title': title,
         'links_menu': links_menu,
-        'products': product
+        'products': product,
+        'basket': basket,
+        'count_products': count_products,
+        'total_price': total_price,
     }
 
     return render(request, 'mainapp/products.html', context)
-
-    # links_menu = [
-    #     {'href': 'products:products_all', 'name': 'все'},
-    #     {'href': 'products:products_home', 'name': 'дом'},
-    #     {'href': 'products:products_office', 'name': 'офис'},
-    #     {'href': 'products:products_modern', 'name': 'модерн'},
-    #     {'href': 'products:products_classic', 'name': 'классика'},
-    # ]
-
-    # context = {
-    #     'title': title,
-    #     'links_menu': links_menu,
-    # }
-    #
-    # template = 'mainapp/products.html'
-    #
-    # if pk:
-    #     obj = Product.objects.get(pk=pk)
-    #     context['product'] = obj
-    #     context['title'] = obj.name
-    #     template = 'mainapp/product-card.html'
-    #
-    # return render(request, template, context=context)
