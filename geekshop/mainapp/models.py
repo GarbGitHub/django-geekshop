@@ -47,6 +47,24 @@ class Product(models.Model):
         blank=True
     )
 
+    image_preview_1 = models.ImageField(  # pip install Pillow
+        verbose_name='дополнительное изображение 1',
+        upload_to='products_images',
+        blank=True
+    )
+
+    image_preview_2 = models.ImageField(  # pip install Pillow
+        verbose_name='дополнительное изображение 2',
+        upload_to='products_images',
+        blank=True
+    )
+
+    image_preview_3 = models.ImageField(  # pip install Pillow
+        verbose_name='дополнительное изображение 3',
+        upload_to='products_images',
+        blank=True
+    )
+
     short_desc = models.CharField(
         verbose_name='краткое описание',
         max_length=256,
