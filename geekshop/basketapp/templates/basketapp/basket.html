@@ -2,7 +2,6 @@
 {% load static %}
 {% block top %}
 <div class="hero">
-    {% include 'basketapp/includes/inc_basket.html' %}
     {% include 'geekshop/includes/inc_main_menu.html' %}
     <h1>{{ title }}</h1>
 </div>
@@ -25,15 +24,15 @@
             <th scope="row">{{ forloop.counter }}</th>
             <td>{{ item.product.name }}</td>
             <td>{{ item.quantity}}</td>
-            <td>{{ item.product.price}}</td>
+            <td>{{ item.product.price|floatformat:0}} руб.</td>
         </tr>
         {% endfor %}
         </tbody>
         <tfoot>
         <tr>
             <th colspan="2">Итого</th>
-            <td>{{ count_products }}</td>
-            <td>{{ total_price }}</td>
+            <td>{{ basket.0.total_quantity }}</td>
+            <td>{{ basket.0.total_cost|floatformat:0 }} руб.</td>
         </tr>
         </tfoot>
     </table>

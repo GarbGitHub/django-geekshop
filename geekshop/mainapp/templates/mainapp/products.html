@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="{% static 'mainapp/style-products.css' %}">
 {% endblock %}
 {% block top %}
-{% include 'basketapp/includes/inc_basket.html' %}
 <div class="hero-white">
     {% include 'geekshop/includes/inc_main_menu.html' %}
 </div>
@@ -15,44 +14,41 @@
     <div class="links clearfix">
         {% include 'mainapp/includes/inc_categories_menu.html' %}
     </div>
-    <!--    <div class="details-products">-->
-    <!--        <div class="details-slider">-->
-    <!--            <div class="slider-product">-->
-    <!--                <img src="{% static 'img/slider1.jpg'%}">-->
-    <!--            </div>-->
-    <!--            <div class="slider-control">-->
-    <!--                <div class="block">-->
+        <div class="details-products">
+            <div class="details-slider">
+                <div class="slider-product">
+                    <img src="/media/{{ hot_product.image }}">
+                </div>
+                <div class="slider-control">
+                    <div class="block">
 
-    <!--                    <a href="#"><img src="{% static 'img/controll.jpg'%}" alt="">-->
-    <!--                        <div class="text"></div>-->
-    <!--                    </a>-->
-    <!--                </div>-->
-    <!--                <div class="block">-->
-    <!--                    <a href="#"><img src="{% static 'img/controll1.jpg'%}" alt="">-->
-    <!--                        <div class="text"></div>-->
-    <!--                    </a>-->
-    <!--                </div>-->
-    <!--                <div class="block">-->
-    <!--                    <a href="#"><img src="{% static 'img/controll2.jpg'%}" alt="">-->
-    <!--                        <div class="text"></div>-->
-    <!--                    </a>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </div>-->
+                        <a href="#"><img src="/media/{{ hot_product.image }}" class="img-prv" alt="">
+                            <div class="text"></div>
+                        </a>
+                    </div>
+                    <div class="block">
+                        <a href="#"><img src="/media/{{ hot_product.image }}" class="img-prv" alt="">
+                            <div class="text"></div>
+                        </a>
+                    </div>
+                    <div class="block">
+                        <a href="#"><img src="/media/{{ hot_product.image }}" class="img-prv" alt="">
+                            <div class="text"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
 
-    <!--        <div class="description">-->
-    <!--            <h3 class="big-bold">Отличный стул</h3>-->
-    <!--            <h3 class="red">горячее предложение</h3>-->
-    <!--            <p class="price"> 2585.9 <span>руб</span></p>-->
-    <!--            <a href="#" class="red-button">заказать <i class="fa fa-chevron-right" aria-hidden="true"></i></a>-->
-    <!--            <div class="description-text">-->
-    <!--                <p>Расположитесь комфортно.</p>-->
-    <!--                <p>Отличное качество материалов позволит вам это.</p>-->
-    <!--                <p>Различные цвета</p>-->
-    <!--                <p>высочайший уровень эргономики и прочность.</p>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
+            <div class="description">
+                <h3 class="big-bold">{{ hot_product.name }}</h3>
+                <h3 class="red">горячее предложение</h3>
+                <p class="price"> {{ hot_product.price|floatformat:0 }} <span>руб</span></p>
+                <a href="#" class="red-button">заказать <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+                <div class="description-text">
+                    {{ hot_product.short_desc }}
+                </div>
+            </div>
+        </div>
 
     <div class="title clearfix">
         <h2>
