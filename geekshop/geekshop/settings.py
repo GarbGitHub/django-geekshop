@@ -44,7 +44,6 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = 'authapp.ShopUser'  # чтобы Django вместо модели User использовал в аутентификации нашу модель.
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -133,3 +132,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Путь к медиа на се
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = '/auth/login/'  # for @login_required

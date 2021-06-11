@@ -1,5 +1,3 @@
-import random
-
 from django.shortcuts import render, get_object_or_404
 
 from basketapp.models import Basket
@@ -37,42 +35,59 @@ def get_same_product(hot_product):
     return same_products
 
 
+def product(request, pk):
+    title = 'продукты'
+
+    content = {
+        'title': title,
+        'links_menu': ProductCategory.objects.all(),
+        'product': get_object_or_404(Product, pk=pk),
+        'basket': get_basket(request.user),
+    }
+    print(request.user)
+
+    return render(request, 'mainapp/product.html', content)
+
+
 def products(request, pk=None):
     title = 'Каталог товаров '
     links_menu = ProductCategory.objects.all()
-    basket = []
+    # basket = []
+    #
+    # if request.user.is_authenticated:
+    #     basket = Basket.objects.filter(user=request.user)
 
-    if request.user.is_authenticated:
-        basket = Basket.objects.filter(user=request.user)
-
+    # Категории товаров
     if pk is not None:
         if pk == 0:
-            product = Product.objects.all().order_by('price')
             category = {'name': 'все'}
+            products = Product.objects.all().order_by('price')
+            title = f'Категория: "Все"'
         else:
             category = get_object_or_404(ProductCategory, pk=pk)
-            product = Product.objects.filter(category__pk=pk).order_by('price')
+            products = Product.objects.filter(category__pk=pk).order_by('price')
             title = f'Категория: "{category.name}"'  # title, H2 Категория: "Дом"
 
         context = {
             'title': title,
             'links_menu': links_menu,
             'category': category,
-            'products': product,
-            'basket': basket,
+            'products': products,
+            'basket': get_basket(request.user),
         }
 
         return render(request, 'mainapp/products.html', context)
 
+    # Главная страница каталога товаров
     hot_product = get_hot_product()
     same_products = get_same_product(hot_product)
 
     context = {
         'title': title,
         'links_menu': links_menu,
-        'basket': basket,
+        'basket': get_basket(request.user),
         'hot_product': hot_product,
-        'same_product': same_products,
+        'same_products': same_products,
     }
 
     return render(request, 'mainapp/products.html', context)

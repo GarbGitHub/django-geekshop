@@ -48,6 +48,19 @@
     font-weight: 700;
 }
 
+
+.details-products {
+    padding-left: 98px;
+    padding-right: 98px;
+    margin-top: 98px;
+    min-height: 601px;
+}
+
+.slider-product {
+    width: 570px;
+    min-height: 450px;
+}
+
 .details-slider {
     width: 500px;
     float: left;
@@ -89,5 +102,5 @@
 }
 
 .img-prv {
-	width: 70px;
+    width: 70px;
 }

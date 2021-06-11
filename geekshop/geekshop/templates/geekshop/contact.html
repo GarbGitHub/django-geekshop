@@ -1,5 +1,9 @@
 {% extends 'geekshop/base.html' %}
 {% load static %}
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'basketapp/css/basket.css' %}">
+{% endblock %}
 {% block top %}
     <div class="hero">
         {% include 'geekshop/includes/inc_main_menu.html' %}

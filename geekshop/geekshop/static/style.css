@@ -856,16 +856,6 @@ td:first-child {
 	position: relative;
 }
 
-.details-products {
-	padding-left: 98px;
-	padding-right: 98px;
-	margin-top: 98px;
-	height: 651px; 
-}
-.slider-product {
-	width: 570px;
-	height: 570px;
-}
 .slider-control {
 	width: 420px;
 	height: 70px;
@@ -1000,22 +990,4 @@ td:first-child {
 }
 .related-products a:hover .text{
 	display: block;
-}
-
-.top-basket p{
-	width: 370px;
-	border-radius: 6px;
-	border-style: solid;
-	border-width: medium;
-	border-color: #efefef;
-	background-color: #f4f4f4;
-	margin: 7px auto;
-}
-
-.top-basket p a{
-	text-decoration: none;
-	color:#212128;
-}
-.top-basket p a:hover{
-	color:#7d7d7d;
 }

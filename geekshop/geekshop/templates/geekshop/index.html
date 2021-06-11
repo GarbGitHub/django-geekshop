@@ -1,5 +1,9 @@
 {% extends 'geekshop/base.html' %}
 {% load static %}
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'basketapp/css/basket.css' %}">
+{% endblock %}
 {% block top %}
     <div class="slider">
     {% include 'geekshop/includes/inc_main_menu.html' %}
@@ -25,7 +29,7 @@
         <div class="tab-content">
             {% for product in products %}
             <div class="block">
-                <a href="#"><img src="/media/{{ product.image }}" alt="{{ product.name }}">
+                <a href="{% url 'products:product' product.pk %}"><img src="/media/{{ product.image }}" alt="{{ product.name }}">
                     <div class="text">
                         <img src="{% static 'img/icon-hover.png' %}" alt="img">
                         <h4>{{ product.name }}</h4>
