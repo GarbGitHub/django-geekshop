@@ -1,0 +1,1 @@
+You need to create a folder named 'svg' https://boxicons.com/
