@@ -2,21 +2,82 @@
 {% load static %}
 
 {% block content %}
-<div class="w-50 ml-3">
-  <div class="card">
-    <div class="card-body">
-      Вы точно хотите удалить пользователя {{ user_to_delete.username }} ?
-    </div>
-  </div>
-  <form class="form-horizontal" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="submit" class="btn btn-round btn-danger" value="Удалить"></input>
-  </form>
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8 col-sm-12">
+        <div class="alert alert-danger text-center" role="alert">
+            Вы точно хотите удалить пользователя {{ user_to_delete.username }} ?
+        </div>
 
-  <button class="btn btn-round btn-secondary">
-    <a href="{% url 'admin_staff:users' %}">
-      к списку пользователей
-    </a>
-  </button>
+        <table class="table table-user-information">
+            <tbody>
+            <tr>
+                <td colspan="2" align="center">
+
+                    <div class="header_img">
+                        {% if user_to_delete.avatar %}
+                        <img src="/media/{{ user_to_delete.avatar }}" alt="{{ user_to_delete.username }}">
+                        {% else %}
+                        <i class='bx bx-user bx-md'></i>
+                        {% endif %}
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <th class="w-50 text-end">Имя пользователя</th>
+                <td>{{ user_to_delete.username }}</td>
+            </tr>
+            <tr>
+                <th class="text-end">Имя</th>
+                <td>{{ user_to_delete.first_name }}</td>
+            </tr>
+            <tr>
+                <th class="text-end">Фамилия</th>
+                <td>{{ user_to_delete.last_name }}</td>
+            </tr>
+            <tr>
+                <th class="text-end">Email:</th>
+                <td>{{ user_to_delete.email }}</td>
+            </tr>
+
+            <tr>
+            <tr>
+                <th class="text-end">Возраст</th>
+                <td>{{ user_to_delete.age }}</td>
+            </tr>
+            <tr>
+                <th class="text-end">Активный:</th>
+                <td>
+                    {% if user_to_delete.is_active %}
+                    <i class="bx bxs-check-circle bx-sm text-success"></i>
+                    {% else %}
+                    <i class="bx bxs-x-circle bx-sm text-muted"></i>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th class="text-end">Персонал сайта:</th>
+                <td>
+                    {% if user_to_delete.is_staff %}
+                    <i class="bx bxs-check-circle bx-sm text-success"></i>
+                    {% else %}
+                    <i class="bx bxs-x-circle bx-sm text-muted"></i>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th class="text-end">Зарегистрирован</th>
+                <td>{{ user_to_delete.date_joined }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <form class="form-horizontal text-center" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <button type="submit" class="btn btn-danger">Удалить</button>
+                <a href="{% url 'admin_staff:users' %}" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}

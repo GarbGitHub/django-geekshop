@@ -5,6 +5,7 @@
     --nav-width: 68px;
     --first-color: #07234c;
     --first-color-light: #AFA5D9;
+    --header-bg: #d9e9fd;
     --white-color: #F7F6FB;
     --body-font: 'Nunito', sans-serif;
     --normal-font-size: 1rem;
@@ -19,6 +20,7 @@
 
 body {
     position: relative;
+    background-color: var(--white-color);
     margin: var(--header-height) 0 0 0;
     padding: 0 1rem;
     font-family: var(--body-font);
@@ -40,9 +42,10 @@ a {
     align-items: center;
     justify-content: space-between;
     padding: 0 1rem;
-    background-color: var(--white-color);
+    background-color: var(--header-bg);
     z-index: var(--z-fixed);
-    transition: .5s
+    transition: .5s;
+    border-bottom:solid 3px #d0dff1;
 }
 
 .header_toggle {
@@ -179,4 +182,7 @@ a {
     .body-pd {
         padding-left: calc(var(--nav-width) + 188px)
     }
+}
+.is-deleted{
+    color: #a9a7a7;
 }
