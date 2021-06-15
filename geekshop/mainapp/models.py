@@ -10,6 +10,8 @@ class ProductCategory(models.Model):
                                    blank=True,  # Не обязательное поле для заполнения
                                    null=True)
 
+    is_active = models.BooleanField(verbose_name='активна', default=True)
+
     created = models.DateTimeField(auto_now_add=True)
 
     update = models.DateTimeField(auto_now=True)
