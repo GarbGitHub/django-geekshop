@@ -1,0 +1,47 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8 col-sm-12">
+        <div class="alert alert-danger text-center" role="alert">
+            Вы точно хотите удалить категорию {{ category_to_delete.name }} ?
+        </div>
+
+        <table class="table table-user-information">
+            <tbody>
+            <tr>
+                <th class="w-50 text-end">Название категории</th>
+                <td>{{ category_to_delete.name }}</td>
+            </tr>
+            <tr>
+                <th class="text-end">Имя</th>
+                <td>{{ category_to_delete.description }}</td>
+            </tr>
+            <tr>
+            <tr>
+                <th class="text-end">Активная:</th>
+                <td>
+                    {% if user_to_delete.is_active %}
+                    <i class="bx bxs-check-circle bx-sm text-success"></i>
+                    {% else %}
+                    <i class="bx bxs-x-circle bx-sm text-muted"></i>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th class="text-end">Дата создания</th>
+                <td>{{ category_to_delete.created }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <form class="form-horizontal text-center" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <button type="submit" class="btn btn-danger">Удалить</button>
+                <a href="{% url 'admin_staff:categories' %}" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% if alert %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  {{ alert }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Дата создания</th>
+                <th>Последнее обновление</th>
+                <th>Активная</th>
+                <th>Удалить</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Дата создания</th>
+                <th>Последнее обновление</th>
+                <th>Активная</th>
+                <th>Удалить</th>
+            </tr>
+            </tfoot>
+            <tbody>
+            {% for category in objects %}
+            <tr>
+                <th>{{ category.pk }}</th>
+                <td><a href="{% url 'admin_staff:category_update' category.id %}"
+                        {% if not category.is_active %}
+                        class="is-deleted"
+                        {% endif %}
+                >{{ category.name }}</a></td>
+                <td {% if not category.is_active %}
+                        class="is-deleted"
+                        {% endif %}>{{ category.description }}</td>
+                <td>{{ category.created }}</td>
+                <td>{{ category.update }}</td>
+                <td class="">
+                    {% if category.is_active %}
+                    <i class="bx bxs-check-circle bx-sm text-success"></i>
+                    {% else %}
+                    <i class="bx bxs-x-circle bx-sm text-muted"></i>
+                    {% endif %}
+                </td>
+                <td class="">
+                    <a href="{% url 'admin_staff:category_delete' category.pk %}"><i
+                            class='bx bxs-x-square bx-sm text-danger'></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{% url 'admin_staff:category_create' %}">
+        <button class="btn btn-outline-primary btn-sm">Создать категорию</button>
+    </a>
+</div>
+
+
+{% endblock %}
