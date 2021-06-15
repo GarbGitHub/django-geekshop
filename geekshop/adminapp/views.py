@@ -34,7 +34,7 @@ def user_create(request):
         if user_form.is_valid():
             user_form.save()
             return HttpResponseRedirect(reverse('admin_staff:users'))
-            # return redirect('admin_staff:users', kwargs={'alert': 'Успешно добавлен'})
+            # return HttpResponseRedirect(reverse('admin_staff:users', kwargs={'alert': 'Пользователь добавлен'}))
 
     else:
         user_form = ShopUserRegisterForm()
