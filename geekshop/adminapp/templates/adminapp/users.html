@@ -73,6 +73,7 @@
             {% endfor %}
             </tbody>
         </table>
+        {% include 'adminapp/includes/inc_pagination.html' %}
     </div>
     <a href="{% url 'adminapp:user_create' %}">
         <button class="btn btn-outline-primary btn-sm">Создать пользователя</button>

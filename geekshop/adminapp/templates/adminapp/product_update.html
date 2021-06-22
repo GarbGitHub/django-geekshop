@@ -5,28 +5,27 @@
 
 {% if alert %}
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    {{ alert }}  <!-- Пользователь успешно обновлен -->
+    {{ alert }}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endif %}
 
 <div class="row justify-content-center">
     <div class="col-lg-6 col-md-6 col-sm-12">
-        <div class="header_img mx-auto d-block">
-            {% if edit_user.avatar %}
-            <img src="{{ edit_user.avatar|media_folder_users }}" alt="{{ edit_user.avatar }}">
-            {% else %}
-            <i class='bx bx-user bx-md'></i>
-            {% endif %}
+        <div class="header_img-admin mx-auto">
+            <p>
+            <img src="{{ object.image|media_folder_products }}"
+                 alt="{{ object.name }}">
+            </p>
         </div>
         <form class="form-horizontal" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Сохранить</button>
+            <div class="btn-group text-center" role="group" aria-label="Basic mixed styles example">
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+                <a href="{% url 'admin_staff:categories' %}" class="btn btn-secondary">Отмена</a>
+            </div>
         </form>
-        <a class="btn btn-link" href="{% url 'admin_staff:users' %}">
-            К списку пользователей
-        </a>
     </div>
 </div>
 {% endblock %}

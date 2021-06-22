@@ -1,6 +1,6 @@
 {% extends 'adminapp/base.html' %}
 {% load static %}
-
+{% load adminapp_tags %}
 {% block content %}
 
 {% if alert %}
@@ -17,10 +17,10 @@
             <th>ID</th>
             <th>Название</th>
             <th>Описание</th>
+            <th>Цена</th>
             <th>Дата создания</th>
             <th>Последнее обновление</th>
-            <th>Активная</th>
-            <th>Править</th>
+            <th>Активный</th>
             <th>Удалить</th>
         </tr>
         </thead>
@@ -29,40 +29,47 @@
             <th>ID</th>
             <th>Название</th>
             <th>Описание</th>
+            <th>Цена</th>
             <th>Дата создания</th>
             <th>Последнее обновление</th>
-            <th>Активная</th>
-            <th>Править</th>
+            <th>Активный</th>
             <th>Удалить</th>
         </tr>
         </tfoot>
         <tbody>
-        {% for category in objects %}
+        {% for object in objects %}
         <tr>
-            <th>{{ category.pk }}</th>
-            <td><a href="{% url 'admin_staff:products' category.id %}"
-                   {% if not category.is_active %}
-                   class="is-deleted"
-                   {% endif %}
-            >{{ category.name }}</a></td>
-            <td {% if not category.is_active %}
-                class="is-deleted"
-                {% endif %}>{{ category.description }}
+            <th>{{ object.pk }}</th>
+            <td class="text-center">
+                <a href="{% url 'admin_staff:product_read' object.pk %}"
+                   {% if not object.is_active %} class="is-deleted" {% endif %}>
+                    <div>
+                        <div class="header_img header_img-admin">
+                            <img src="{{ object.image|media_folder_products }}"
+                                 alt="{{ object.name }}">
+                        </div>
+                        {{ object.name }}
+                    </div>
+                </a>
             </td>
-            <td>{{ category.created }}</td>
-            <td>{{ category.update }}</td>
+            <td {% if not object.is_active %}
+                class="is-deleted"
+                {% endif %}>
+                <p>{{ object.short_desc }}</p>
+                <p>{{ object.description }}</p>
+            </td>
+            <td>{{ object.price|floatformat:0 }}</td>
+            <td><small>{{ object.created }}</small></td>
+            <td><small>{{ object.update }}</small></td>
             <td class="">
-                {% if category.is_active %}
+                {% if object.is_active %}
                 <i class="bx bxs-check-circle bx-sm text-success"></i>
                 {% else %}
                 <i class="bx bxs-x-circle bx-sm text-muted"></i>
                 {% endif %}
             </td>
-            <td><a href="{% url 'admin_staff:category_update' category.id %}"
-            ><i class="bx bx-edit text-primary bx-sm"></i></a></td>
             <td class="">
-                <a href="{% url 'admin_staff:category_delete' category.pk %}"><i
-                        class='bx bxs-x-square bx-sm text-danger'></i></a>
+                <a href="{% url 'admin_staff:product_delete' object.pk %}"><i class='bx bxs-x-square bx-sm text-danger'></i></a>
             </td>
         </tr>
         {% endfor %}
@@ -70,7 +77,7 @@
     </table>
     {% include 'adminapp/includes/inc_pagination.html' %}
 </div>
-<a href="{% url 'admin_staff:category_create' %}">
-    <button class="btn btn-outline-primary btn-sm">Создать категорию</button>
+<a href="">
+    <a href="" class="btn btn-outline-primary btn-sm">Создать товар</a>
 </a>
 {% endblock %}
