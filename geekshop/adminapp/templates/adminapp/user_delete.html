@@ -1,6 +1,6 @@
 {% extends 'adminapp/base.html' %}
 {% load static %}
-
+{% load adminapp_tags %}
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-lg-6 col-md-8 col-sm-12">
@@ -15,7 +15,7 @@
 
                     <div class="header_img">
                         {% if user_to_delete.avatar %}
-                        <img src="/media/{{ user_to_delete.avatar }}" alt="{{ user_to_delete.username }}">
+                        <img src="{{ user_to_delete.avatar|media_folder_users }}" alt="{{ user_to_delete.username }}">
                         {% else %}
                         <i class='bx bx-user bx-md'></i>
                         {% endif %}

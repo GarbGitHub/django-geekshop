@@ -1,0 +1,58 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+{% load adminapp_tags %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8 col-sm-12">
+        <table class="table table-user-information">
+            <tbody>
+            <tr>
+                <td colspan="2" align="center">
+                    <div class="header_img-admin">
+                        <img src="{{ object.image|media_folder_products }}"
+                             alt="{{ object.name }}">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th class="w-50 text-end">Продукт</th>
+                <td>{{ object.category.name|title }} / {{ object.name|title }}</td>
+            </tr>
+            <tr>
+                <th class="text-end">Краткая информация</th>
+                <td>{{ object.short_desc }}</td>
+            </tr>
+            <tr>
+                <th class="text-end">Подробная информация</th>
+                <td>{{ object.description }}</td>
+            </tr>
+            <tr>
+                <th class="text-end">Количество</th>
+                <td>{{ object.quantity }}</td>
+            </tr>
+            <tr>
+                <th class="text-end">Цена</th>
+                <td>{{ object.price }} руб</td>
+            </tr>
+            <tr>
+                <th class="text-end">Активный:</th>
+                <td>
+                    {% if object.is_active %}
+                    <i class="bx bxs-check-circle bx-sm text-success"></i>
+                    {% else %}
+                    <i class="bx bxs-x-circle bx-sm text-muted"></i>
+                    {% endif %}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <form class="form-horizontal text-center" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <a href="{% url 'admin_staff:product_update' object.pk %}" class="btn btn-primary">Редактировать</a>
+                <a href="{% url 'admin_staff:product_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
