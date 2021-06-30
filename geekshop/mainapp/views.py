@@ -1,4 +1,8 @@
+from django.contrib.auth.decorators import user_passes_test
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404
+from django.utils.decorators import method_decorator
+from django.views.generic import DetailView, ListView
 
 from basketapp.models import Basket
 from .models import Product, ProductCategory
@@ -23,6 +27,7 @@ def get_hot_product():
     """
     products = Product.objects.all()
     # return random.sample(list(products), 1)[0]  # создан лишний объект list
+
     return products[randint(0, len(products) - 1)]
 
 
@@ -33,45 +38,67 @@ def get_same_product(hot_product):
     :return: список продуктов
     """
     same_products = Product.objects.filter(category=hot_product.category).exclude(pk=hot_product.pk)[:3]
+
     return same_products
 
 
-def product(request, pk):
-    title = 'продукты'
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'mainapp/product.html'
+    context_object_name = 'product'
 
-    content = {
-        'title': title,
-        'links_menu': ProductCategory.objects.all(),
-        'product': get_object_or_404(Product, pk=pk),
-        'basket': get_basket(request.user),
-    }
-    print(request.user)
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+        context['basket'] = get_basket(request.user)
+        context['title'] = context.get(self, self.object.name)
+        context['links_menu'] = ProductCategory.objects.filter(is_active=True)
+        return self.render_to_response(context)
 
-    return render(request, 'mainapp/product.html', content)
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+
+        return super().dispatch(*args, **kwargs)
+
+
+# class ProductListView(ListView):
+#     model = Product
+#     template_name = 'mainapp/products.html'
+#     context_object_name = 'products'
+#
+#     def get(self, request, *args, **kwargs):
+#         self.object_list = self.get_queryset()
+#         context = self.get_context_data()
+#         context['basket'] = get_basket(request.user)
+#         return self.render_to_response(context)
+#
+#     @method_decorator(user_passes_test(lambda u: u.is_superuser))
+#     def dispatch(self, *args, **kwargs):
+#         return super().dispatch(*args, **kwargs)
 
 
 def products(request, pk=None, page=1):
     title = 'Каталог товаров '
     links_menu = ProductCategory.objects.filter(is_active=True)
 
-    # basket = []
-    #
-    # if request.user.is_authenticated:
-    #     basket = Basket.objects.filter(user=request.user)
-
-    # Категории товаров
     if pk is not None:
         if pk == 0:
             category = {'name': 'все', 'pk': 0}
-            products = Product.objects.filter(is_active=True, category__is_active=True).order_by('price')
+            products = Product.objects.filter(
+                is_active=True,
+                category__is_active=True
+            ).order_by('price')
             title = f'Категория: "Все"'
         else:
             category = get_object_or_404(ProductCategory, pk=pk)
-            products = Product.objects.filter(category__pk=pk, is_active=True, category__is_active=True).order_by(
+            products = Product.objects.filter(
+                category__pk=pk,
+                is_active=True,
+                category__is_active=True).order_by(
                 'price')
             title = f'Категория: "{category.name}"'  # title, H2 Категория: "Дом"
 
-        paginator = Paginator(products, 2)
+        paginator = Paginator(products, 3)
 
         try:
             products_paginator = paginator.page(page)

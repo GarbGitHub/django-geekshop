@@ -1,5 +1,4 @@
 {% extends 'adminapp/base.html' %}
-{% load static %}
 {% load adminapp_tags %}
 {% block content %}
 
@@ -75,9 +74,6 @@
         {% endfor %}
         </tbody>
     </table>
-    {% include 'adminapp/includes/inc_pagination.html' %}
 </div>
-<a href="">
-    <a href="" class="btn btn-outline-primary btn-sm">Создать товар</a>
-</a>
+    <a href="{% url 'admin_staff:product_create' category.pk %}" class="btn btn-outline-primary btn-sm">Создать товар</a>
 {% endblock %}

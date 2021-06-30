@@ -1,6 +1,5 @@
 {% extends 'adminapp/base.html' %}
-{% load static %}
-
+{% load adminapp_tags %}
 {% block content %}
 
 {% if alert %}
@@ -68,7 +67,6 @@
         {% endfor %}
         </tbody>
     </table>
-    {% include 'adminapp/includes/inc_pagination.html' %}
 </div>
 <a href="{% url 'admin_staff:category_create' %}">
     <button class="btn btn-outline-primary btn-sm">Создать категорию</button>

@@ -1,12 +1,13 @@
 {% extends 'geekshop/base.html' %}
 {% load static %}
+{% load adminapp_tags %}
 {% block css %}
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% static 'mainapp/style-products.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'basketapp/css/basket.css' %}">
 {% endblock %}
 {% block top %}
- {% include 'basketapp/includes/inc_basket.html' %}
+{% include 'basketapp/includes/inc_basket.html' %}
 <div class="hero-white">
     {% include 'geekshop/includes/inc_main_menu.html' %}
 </div>
@@ -22,22 +23,25 @@
     <div class="details-products">
         <div class="details-slider">
             <div class="slider-product">
-                <img src="/media/{{ hot_product.image }}">
+                <img src="{{ hot_product.image|media_folder_products }}">
             </div>
             <div class="slider-control">
                 <div class="block">
 
-                    <a href="#"><img src="/media/{{ hot_product.image_preview_1 }}" class="img-prv" alt="">
+                    <a href="#"><img src="{{ hot_product.image_preview_1|media_folder_products }}" class="img-prv"
+                                     alt="{{ hot_product.name }}">
                         <div class="text"></div>
                     </a>
                 </div>
                 <div class="block">
-                    <a href="#"><img src="/media/{{ hot_product.image_preview_2 }}" class="img-prv" alt="">
+                    <a href="#"><img src="{{ hot_product.image_preview_2|media_folder_products }}" class="img-prv"
+                                     alt="{{ hot_product.name }}">
                         <div class="text"></div>
                     </a>
                 </div>
                 <div class="block">
-                    <a href="#"><img src="/media/{{ hot_product.image_preview_3 }}" class="img-prv" alt="">
+                    <a href="#"><img src="{{ hot_product.image_preview_3|media_folder_products }}" class="img-prv"
+                                     alt="{{ hot_product.name }}">
                         <div class="text"></div>
                     </a>
                 </div>
@@ -69,7 +73,7 @@
             {% for product in products %}
             <div class="block col w-25 my-3">
                 <a href="{% url 'products:product' product.pk %}">
-                    <img src="/media/{{ product.image }}" class="" alt="{{ product.name }}">
+                    <img src="{{ product.image|media_folder_products }}" class="" alt="{{ product.name }}">
                     <div class="text">
                         <img src="{% static 'img/icon-hover.png' %}" alt="hover">
                         <h4>{{ product.name }}</h4>
@@ -81,18 +85,18 @@
         </div>
     </div>
     {% endif%}
-<div class="paginator">
-          {% if products.has_previous %}
-            <a href="{% url 'products:page' category.pk products.previous_page_number %}"><</a>
-          {% endif %}
-          <span class="current">
+    <div class="paginator">
+        {% if products.has_previous %}
+        <a href="{% url 'products:page' category.pk products.previous_page_number %}"><</a>
+        {% endif %}
+        <span class="current">
             страница {{ products.number }} из
             {{ products.paginator.num_pages }}
           </span>
-          {% if products.has_next %}
-            <a href="{% url 'products:page' category.pk products.next_page_number %}">></a>
-          {% endif %}
-        </div>
+        {% if products.has_next %}
+        <a href="{% url 'products:page' category.pk products.next_page_number %}">></a>
+        {% endif %}
+    </div>
 
     <!-- Похожие товары на главной каталога  -->
     {% if same_products %}
@@ -109,7 +113,7 @@
             {% for same_product in same_products %}
             <div class="block col-md-4 my-3 mx-3">
                 <a href="{% url 'products:product' same_product.pk %}">
-                    <img src="/media/{{ same_product.image }}" class="" alt="{{ product.name }}">
+                    <img src="{{ same_product.image|media_folder_products }}" class="" alt="{{ product.name }}">
                     <div class="text">
                         <img src="{% static 'img/icon-hover.png' %}" alt="hover">
                         <h4>{{ same_product.name }}</h4>

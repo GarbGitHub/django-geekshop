@@ -1,12 +1,12 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseRedirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.shortcuts import get_object_or_404
 
 from adminapp.forms import ShopUserRegisterForm, ProductCategoryEditForm, ProductEditForm
 from authapp.models import ShopUser
-from django.shortcuts import get_object_or_404, render
 from mainapp.models import Product, ProductCategory
 
 
@@ -14,8 +14,8 @@ class UsersListView(ListView):
     model = ShopUser
     template_name = 'adminapp/users.html'
     context_object_name = 'objects'
-    ordering = '-is_active', '-is_staff'
-    paginate_by = 5
+    ordering = '-is_active', '-is_staff', 'username'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -28,27 +28,26 @@ class UsersListView(ListView):
         return super().dispatch(*args, **kwargs)
 
 
-@user_passes_test(lambda u: u.is_superuser)
-def user_create(request):
-    title = 'создание пользователя'
+class UserCreateView(CreateView):
+    model = ShopUser
+    template_name = 'adminapp/user_update.html'
+    success_url = reverse_lazy('admin_staff:users')
 
-    if request.method == 'POST':
-        user_form = ShopUserRegisterForm(request.POST, request.FILES)
-        if user_form.is_valid():
-            user_form.save()
-            return HttpResponseRedirect(reverse('admin_staff:users'))
-            # return HttpResponseRedirect(reverse('admin_staff:users', kwargs={'alert': 'Пользователь добавлен'}))
+    # fields = '__all__'  # get_form()
 
-    else:
-        user_form = ShopUserRegisterForm()
+    def get_form(self, form_class=ShopUserRegisterForm):
+        """Вернет экземпляр формы, которая будет использоваться в этом представлении."""
+        return form_class(**self.get_form_kwargs())
 
-    context = {
-        'title': title,
-        'update_form': user_form,
-        'icon': 'bx-user-plus',
-    }
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserCreateView, self).get_context_data(**kwargs)
+        context['icon'] = 'bx-user-plus'
+        context['title'] = f'создание пользователя'
+        return context
 
-    return render(request, 'adminapp/user_update.html', context)
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 
 class UserUpdateView(UpdateView):
@@ -68,30 +67,58 @@ class UserUpdateView(UpdateView):
         title = f'пользователь: {context.get(self, self.object.username)}'
         context['title'] = title
         context['icon'] = 'bx-edit'
+
         return context
+
+    # def post(self, request, *args, **kwargs):
+    # self.object = self.get_object()
+    # self.context = self.get_context_data(object=self.object)
+    # self.context.update({
+    #     'alert': 'Данные успешно обновлены'
+    # })
+    # return super(UserUpdateView, self).post(request, **kwargs)
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
 
-@user_passes_test(lambda u: u.is_superuser)
-def user_delete(request, pk):
-    user = get_object_or_404(ShopUser, pk=pk)
-    title = f'удалить: {user.username}'
+class UserDeleteView(DeleteView):
+    model = ShopUser
+    template_name = 'adminapp/user_delete.html'
+    success_url = reverse_lazy('admin_staff:users')
+    context_object_name = 'user_to_delete'
 
-    if request.method == 'POST':
-        user.is_active = False
-        user.save()
-        return HttpResponseRedirect(reverse('admin_staff:users'))
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'удалить пользователя: {context.get(self, self.object.username)}'
+        context['icon'] = 'bx-user_to_delete'
+        return context
 
-    context = {
-        'title': title,
-        'user_to_delete': user,
-        'icon': 'bx-user-x',
-    }
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.is_active = False
+        self.object.save()
 
-    return render(request, 'adminapp/user_delete.html', context)
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class CategoriesListView(ListView):
+    model = ProductCategory
+    template_name = 'adminapp/categories.html'
+    context_object_name = 'objects'
+    ordering = '-is_active'
+    paginate_by = 3
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(CategoriesListView, self).get_context_data(**kwargs)
+        context['icon'] = 'bx-cart'
+        context['title'] = f'категории товаров'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 
 class ProductCategoryCreateView(CreateView):
@@ -109,24 +136,6 @@ class ProductCategoryCreateView(CreateView):
         context = super(ProductCategoryCreateView, self).get_context_data(**kwargs)
         context['icon'] = 'bx-category'
         context['title'] = f'Создание категории'
-        return context
-
-    @method_decorator(user_passes_test(lambda u: u.is_superuser))
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-
-
-class CategoriesListView(ListView):
-    model = ProductCategory
-    template_name = 'adminapp/categories.html'
-    context_object_name = 'objects'
-    ordering = '-is_active'
-    paginate_by = 2
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(CategoriesListView, self).get_context_data(**kwargs)
-        context['icon'] = 'bx-cart'
-        context['title'] = f'категории товаров'
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
@@ -197,48 +206,34 @@ class ProductsListView(ListView):
         return super().dispatch(*args, **kwargs)
 
 
-# class ProductCreateView(CreateView):
-#     model = Product
-#     template_name = 'adminapp/product_update.html'
-#     success_url = reverse_lazy('admin_staff:categories')
-#     # initial = {}
-#     fields = '__all__'  # get_form()
-#
-#     # def get_form(self, form_class=ProductEditForm):
-#     #     """Вернет экземпляр формы, которая будет использоваться в этом представлении."""
-#     #     return form_class(**self.get_form_kwargs())
-#
-#     def get_context_data(self, *args, **kwargs):
-#         context = super(ProductCreateView, self).get_context_data(**kwargs)
-#         context['icon'] = 'bx-category'
-#         context['title'] = f'Добавить новый товар'
-#         return context
-#
-#     @method_decorator(user_passes_test(lambda u: u.is_superuser))
-#     def dispatch(self, *args, **kwargs):
-#         return super().dispatch(*args, **kwargs)
+class ProductCreateView(CreateView):
+    model = Product
+    template_name = 'adminapp/product_update.html'
+    success_url = reverse_lazy('admin_staff:users')
 
+    # initial = 'category': category
+    # fields = '__all__'  # get_form()
 
-@user_passes_test(lambda u: u.is_superuser)
-def product_create(request, pk):
-    title = 'Добавить новый товар'
-    category = get_object_or_404(ProductCategory, pk=pk)
+    def get_initial(self):
+        initial = super(ProductCreateView, self).get_initial()
+        initial['category'] = get_object_or_404(ProductCategory, pk=self.kwargs.get('pk'))
+        return initial
 
-    if request.method == 'POST':
-        product_form = ProductEditForm(request.POST, request.FILES)
-        if product_form.is_valid():
-            product_form.save()
-            return HttpResponseRedirect(reverse('adminapp:products', args=[pk]))
-    else:
-        # элемент формы, соответствующий атрибуту 'category', заполнится значением текущей категории.
-        product_form = ProductEditForm(initial={'category': category})
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProductCreateView, self).get_context_data(**kwargs)
+        category = get_object_or_404(ProductCategory, pk=self.kwargs.get('pk'))
+        context['icon'] = 'bx-category'
+        context['title'] = f'Добавить новый товар'
+        context['category'] = category
+        return context
 
-    content = {'title': title,
-               'update_form': product_form,
-               'category': category
-               }
+    def get_form(self, form_class=ProductEditForm):
+        """Вернет экземпляр формы, которая будет использоваться в этом представлении."""
+        return form_class(**self.get_form_kwargs())
 
-    return render(request, 'adminapp/product_update.html', content)
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 
 class ProductDetailView(DetailView):
@@ -298,4 +293,3 @@ class ProductDeleteView(DeleteView):
         self.object.save()
 
         return HttpResponseRedirect(self.get_success_url())
-

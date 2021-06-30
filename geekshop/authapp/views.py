@@ -1,7 +1,13 @@
+from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render, HttpResponseRedirect
+from django.utils.decorators import method_decorator
+from django.views.generic import UpdateView
+
 from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm
 from django.contrib import auth
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+
+from authapp.models import ShopUser
 
 
 def login(request):
@@ -51,6 +57,30 @@ def register(request):
                'register_form': register_form}
 
     return render(request, 'authapp/register.html', context)
+
+
+class UserEditView(UpdateView):
+    model = ShopUser
+    template_name = 'authapp/edit.html'
+    context_object_name = 'edit_user'
+
+    def get_form(self, form_class=ShopUserEditForm):
+        """Вернет экземпляр формы, которая будет использоваться в этом представлении."""
+        return form_class(**self.get_form_kwargs())
+
+    def get_success_url(self):
+        return reverse_lazy('auth:edit', args=(self.object.id,))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        title = f'пользователь: {context.get(self, self.object.username)}'
+        context['title'] = title
+        context['icon'] = 'bx-edit'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 
 def edit(request):

@@ -1,5 +1,6 @@
 {% extends 'geekshop/base.html' %}
 {% load static %}
+{% load adminapp_tags %}
 {% block css %}
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% static 'mainapp/style-products.css' %}">
@@ -20,26 +21,36 @@
     <div class="details-products">
         <div class="details-slider">
             <div class="slider-product">
-                <img src="/media/{{ product.image }}">
+                <img src="{{ product.image|media_folder_products }}">
             </div>
+            {% if product.image_preview_1 or product.image_preview_2 or product.image_preview_3 %}
             <div class="slider-control">
+                {% if product.image_preview_1 %}
                 <div class="block">
-
-                    <a href="#"><img src="/media/{{ product.image_preview_1 }}" class="img-prv" alt="{{ product.image }}">
+                    <a href="#"><img src="{{ product.image_preview_1|media_folder_products }}" class="img-prv"
+                                     alt="{{ product.name }}">
                         <div class="text"></div>
                     </a>
                 </div>
+                {% endif %}
+                {% if product.image_preview_2 %}
                 <div class="block">
-                    <a href="#"><img src="/media/{{ product.image_preview_2 }}" class="img-prv" alt="{{ product.image }}">
+                    <a href="#"><img src="{{ product.image_preview_2|media_folder_products }}" class="img-prv"
+                                     alt="{{ product.name }}">
                         <div class="text"></div>
                     </a>
                 </div>
+                {% endif %}
+                {% if product.image_preview_3 %}
                 <div class="block">
-                    <a href="#"><img src="/media/{{ product.image_preview_3 }}" class="img-prv" alt="{{ product.image }}">
+                    <a href="#"><img src="{{ product.image_preview_3|media_folder_products }}" class="img-prv"
+                                     alt="{{ product.name }}">
                         <div class="text"></div>
                     </a>
                 </div>
+                {% endif %}
             </div>
+            {% endif %}
         </div>
 
         <div class="description">
