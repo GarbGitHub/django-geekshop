@@ -4,20 +4,9 @@ from django.shortcuts import render, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, ListView
 
-from basketapp.models import Basket
 from .models import Product, ProductCategory
 from random import randint
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
-
-def get_basket(user):
-    """
-    Создание пользовательской корзины продуктов
-    :param user:
-    :return: корзина пользователя
-    """
-    if user.is_authenticated:
-        return Basket.objects.filter(user=user) if user.is_authenticated else []
 
 
 def get_hot_product():
@@ -50,7 +39,6 @@ class ProductDetailView(DetailView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         context = self.get_context_data(object=self.object)
-        context['basket'] = get_basket(request.user)
         context['title'] = context.get(self, self.object.name)
         context['links_menu'] = ProductCategory.objects.filter(is_active=True)
         return self.render_to_response(context)
@@ -112,7 +100,6 @@ def products(request, pk=None, page=1):
             'links_menu': links_menu,
             'category': category,
             'products': products_paginator,
-            'basket': get_basket(request.user),
         }
 
         return render(request, 'mainapp/products.html', context)
@@ -124,7 +111,6 @@ def products(request, pk=None, page=1):
     context = {
         'title': title,
         'links_menu': links_menu,
-        'basket': get_basket(request.user),
         'hot_product': hot_product,
         'same_products': same_products,
     }
