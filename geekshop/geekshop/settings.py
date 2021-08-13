@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-from .config import APP_SECRET_KEY
+from .config import APP_SECRET_KEY, APP_EMAIL_HOST_PASSWORD, APP_EMAIL_HOST_USER
 import os
 from pathlib import Path
 
@@ -136,3 +136,22 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Путь к медиа на се
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/auth/login/'  # for @login_required
+
+DOMAIN_NAME = 'http://localhost:8000'
+
+# https://mailtrap.io/
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = APP_EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = APP_EMAIL_HOST_PASSWORD
+EMAIL_PORT = '2525'
+EMAIL_USE_SSL = False
+EMAIL_USE_TLS = False
+
+# EMAIL_HOST_USER, EMAIL_HOST_PASSWORD = None, None
+
+# вариант python -m smtpd -n -c DebuggingServer localhost:25
+# EMAIL_HOST_USER, EMAIL_HOST_PASSWORD = None, None
+
+# вариант логирования сообщений почты в виде файлов вместо отправки
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = 'tmp/email-messages/'
