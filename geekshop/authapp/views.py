@@ -5,7 +5,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView
 
-from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm
+from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm, DivErrorList
 from django.contrib import auth
 from django.urls import reverse, reverse_lazy
 
@@ -13,13 +13,13 @@ from authapp.models import ShopUser
 
 
 def login(request):
-
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('index'))
 
     title = 'вход'
 
-    login_form = ShopUserLoginForm(data=request.POST)  # Все данные из формы полученные методом POST
+    login_form = ShopUserLoginForm(data=request.POST or None,
+                                   error_class=DivErrorList)  # Все данные из формы полученные методом POST
 
     next = request.GET['next'] if 'next' in request.GET.keys() else ''  # next=/basket/add/3/
 
@@ -54,7 +54,7 @@ def register(request):
     }
 
     if request.method == 'POST':
-        register_form = ShopUserRegisterForm(request.POST, request.FILES)
+        register_form = ShopUserRegisterForm(request.POST, request.FILES, error_class=DivErrorList)
 
         if register_form.is_valid():
             email = request.POST['email']
