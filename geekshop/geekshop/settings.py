@@ -139,6 +139,16 @@ LOGIN_URL = '/auth/login/'  # for @login_required
 
 DOMAIN_NAME = 'http://localhost:8000'
 
+# smtp.mail.ru
+# EMAIL_HOST = 'smtp.mail.ru'
+# EMAIL_PORT = 2525
+# EMAIL_HOST_USER = "name..@mail.ru"
+# EMAIL_HOST_PASSWORD = "pass.."
+# EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = False
+# SERVER_EMAIL = EMAIL_HOST_USER
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 # https://mailtrap.io/
 EMAIL_HOST = 'smtp.mailtrap.io'
 EMAIL_HOST_USER = APP_EMAIL_HOST_USER
@@ -153,5 +163,5 @@ EMAIL_USE_TLS = False
 # EMAIL_HOST_USER, EMAIL_HOST_PASSWORD = None, None
 
 # вариант логирования сообщений почты в виде файлов вместо отправки
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = 'tmp/email-messages/'
+# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+# EMAIL_FILE_PATH = 'tmp/email-messages/'
