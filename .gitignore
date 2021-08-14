@@ -116,3 +116,7 @@ GitHub.sublime-settings
 !.vscode/extensions.json
 .history
 /geekshop/adminapp/static/adminapp/svg/
+
+# Cython debug symbols
+cython_debug/
+tmp/
