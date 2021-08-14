@@ -2,19 +2,28 @@
 {% load static %}
 
 {% block content %}
-<div class="col-4 mx-auto">
+
     <div class="row">
-        <div class="col">
+        <div class="col-4 mx-auto">
+            {% if message %}
+            {{ message }}
+            {% endif %}
             <form class="form-horizontal" action="{% url 'auth:register' %}" method="post"
                   enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ register_form.as_p }}
-                <br>
-                <input class="form-control btn-primary" type="submit" value="зарегистрироваться">
+                {% if register_form %}
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center py-1">
+                    <input class="form-control btn-primary" type="submit" value="Зарегистрироваться">
+                </div>
+                {% endif %}
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center py-1">
+                    <a href="{% url 'index' %}" class="btn btn-link">На главную</a>
+                </div>
             </form>
         </div>
     </div>
-</div>
+
 
 {% endblock %}
 
