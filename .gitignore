@@ -90,6 +90,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+geekshop/vk.json
+vk.json
 
 # Sublime Text #
 *.tmlanguage.cache
