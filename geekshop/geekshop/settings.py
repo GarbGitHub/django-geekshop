@@ -10,9 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-from .config import APP_SECRET_KEY, APP_EMAIL_HOST_PASSWORD, APP_EMAIL_HOST_USER
-import os
+from .config import APP_SECRET_KEY
+import os, json
 from pathlib import Path
+
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,6 +46,7 @@ INSTALLED_APPS = [
     'authapp',
     'basketapp',
     'adminapp',
+    'social_django',
 ]
 
 AUTH_USER_MODEL = 'authapp.ShopUser'  # чтобы Django вместо модели User использовал в аутентификации нашу модель.
@@ -53,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'geekshop.urls'
@@ -69,10 +76,32 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'mainapp.context_processors.basket',
+                'mainapp.context_processors.user_avatar',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
+
+LOGIN_ERROR_URL = '/'
+
+SOCIAL_AUTH_VK_OAUTH2_IGNORE_DEFAULT_SCOPE = True
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email', 'avatar']
+SOCIAL_AUTH_ODNOKLASSNIKI_OAUTH2_SCOPE = ['email']
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.create_user',
+    'authapp.pipeline.save_user_profile',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+    'social_core.pipeline.social_auth.associate_by_email',
+)
 
 WSGI_APPLICATION = 'geekshop.wsgi.application'
 
@@ -151,17 +180,41 @@ DOMAIN_NAME = 'http://localhost:8000'
 
 # https://mailtrap.io/
 EMAIL_HOST = 'smtp.mailtrap.io'
-EMAIL_HOST_USER = APP_EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = APP_EMAIL_HOST_PASSWORD
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = '2525'
 EMAIL_USE_SSL = False
 EMAIL_USE_TLS = False
 
 # EMAIL_HOST_USER, EMAIL_HOST_PASSWORD = None, None
 
-# вариант python -m smtpd -n -c DebuggingServer localhost:25
+# Вариант python -m smtpd -n -c DebuggingServer localhost:25
 # EMAIL_HOST_USER, EMAIL_HOST_PASSWORD = None, None
 
-# вариант логирования сообщений почты в виде файлов вместо отправки
+# Вариант логирования сообщений почты в виде файлов вместо отправки
 # EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 # EMAIL_FILE_PATH = 'tmp/email-messages/'
+
+# Константа с кортежем бэкендов аутентификации
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.vk.VKOAuth2',
+    'social_core.backends.odnoklassniki.OdnoklassnikiOAuth2',
+)
+
+# # Загружаем секреты из файла
+# with open('geekshop/vk.json', 'r') as f:
+#     VK = json.load(f)
+
+# SOCIAL_AUTH_VK_OAUTH2_KEY = VK['SOCIAL_AUTH_VK_OAUTH2_KEY']
+# SOCIAL_AUTH_VK_OAUTH2_SECRET = VK['SOCIAL_AUTH_VK_OAUTH2_SECRET']
+
+# Загружаем секреты из виртуального окружения
+SOCIAL_AUTH_VK_OAUTH2_KEY = env('SOCIAL_AUTH_VK_OAUTH2_KEY')
+SOCIAL_AUTH_VK_OAUTH2_SECRET = env('SOCIAL_AUTH_VK_OAUTH2_SECRET')
+
+SOCIAL_AUTH_ODNOKLASSNIKI_OAUTH2_KEY = env('SOCIAL_AUTH_ODNOKLASSNIKI_OAUTH2_KEY')  # Application ID
+SOCIAL_AUTH_ODNOKLASSNIKI_OAUTH2_SECRET = env('SOCIAL_AUTH_ODNOKLASSNIKI_OAUTH2_SECRET')  # Секретный ключ приложения
+SOCIAL_AUTH_ODNOKLASSNIKI_OAUTH2_PUBLIC_NAME = env('SOCIAL_AUTH_ODNOKLASSNIKI_OAUTH2_PUBLIC_NAME')  # Публичный ключ приложения
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'

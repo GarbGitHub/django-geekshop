@@ -5,18 +5,30 @@
 {% block content %}
 <div class="row">
     <div class="col-4 mx-auto">
+        <div class="social_icons mb-4">
+            <!-- vk-->
+            <a href="{% url 'social:begin' 'vk-oauth2' %}?next=/" class="social_link" title="вк">
+                <i class='bx bxl-vk p-2 icon-social icon-social-vk'></i>
+            </a>
+            <!-- odnoklassniki-->
+            <a href="{% url 'social:begin' 'odnoklassniki-oauth2' %}?next=/" class="social_link" title="одноклассники">
+                <i class='bx bxl-ok-ru p-2 icon-social icon-social-ok'></i>
+            </a>
+        </div>
         <form class="form-horizontal" action="{% url 'auth:login' %}" method="post">
             {% csrf_token %}
             {% if next %}
             <input type="hidden" name="next" value="{{ next }}">
             {% endif %}
             {{ login_form.as_p }}
-            <br>
-            <input class="form-control btn-primary" type="submit" value="войти">
+
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center py-1">
+                <input class="btn btn-primary" type="submit" value="Войти">
+            </div>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center py-1">
+                <a href="{% url 'auth:register' %}" class="btn btn-link">Зарегистрироваться</a>
+            </div>
         </form>
-        <p class="text-center mt-3">
-            <a href="{% url 'auth:register' %}" class="btn btn-primary">Зарегистрироваться</a>
-        </p>
     </div>
 </div>
 {% endblock %}
