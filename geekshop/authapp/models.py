@@ -44,6 +44,7 @@ class ShopUserProfile(models.Model):
     aboutMe = models.TextField(verbose_name='о себе', max_length=512, blank=True)
     gender = models.CharField(verbose_name='пол', max_length=1, choices=GENDER_CHOICES, blank=True)
     vk_profile = models.CharField(verbose_name='профиль ВК', max_length=128, blank=True)
+    ok_profile = models.CharField(verbose_name='профиль Одноклассники', max_length=128, blank=True)
     vk_user_avatar = models.CharField(verbose_name='фото вк', max_length=256, blank=True)
     language = models.CharField(verbose_name='язык', max_length=128, blank=True)
 
