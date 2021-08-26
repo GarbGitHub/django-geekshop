@@ -1,37 +1,88 @@
-<div class="header clearfix">
-    <a href="{% url 'index' %}" class="logo"></a>
-    <ul class="menu">
-<!--        <li><a href="{% url 'index' %}" class="{% if request.resolver_match.view_name == 'index' %}-->
+<!--<div class="header clearfix">-->
+<!--    <a href="{% url 'index' %}" class="logo"></a>-->
+<!--    <ul class="menu">-->
+<!--        <li><a href="{% url 'products:products' %}" class="{% if request.resolver_match.view_name == 'products:products' %}-->
 <!--            active-->
-<!--        {% endif %}">домой</a></li>-->
-        <li><a href="{% url 'products:products' %}" class="{% if request.resolver_match.view_name == 'products:products' %}
-            active
-        {% endif %}">каталог</a></li>
-        <li><a href="{% url 'contacts' %}" class="{% if request.resolver_match.view_name == 'contacts' %}
-            active
-        {% endif %}">контакты</a></li>
+<!--        {% endif %}">каталог</a></li>-->
+<!--        <li><a href="{% url 'contacts' %}" class="{% if request.resolver_match.view_name == 'contacts' %}-->
+<!--            active-->
+<!--        {% endif %}">контакты</a></li>-->
+<!--        {% if user.is_authenticated %}-->
+<!--        <li>-->
+<!--            <a href="{% url 'auth:edit' %}">-->
+<!--                {{ user.first_name|default:'Пользователь' }}-->
+<!--            </a>-->
+<!--        </li>-->
+<!--        {% endif %}-->
+<!--        {% if user.is_superuser %}-->
+<!--        <li>-->
+<!--            <a href="{% url 'admin_staff:users' %}">-->
+<!--                Админка-->
+<!--            </a>-->
+<!--        </li>-->
+<!--        {% endif %}-->
+
+<!--        <li>-->
+<!--            {% if user.is_authenticated %}-->
+<!--            <a href="{% url 'auth:logout' %}">выйти</a>-->
+<!--            {% else %}-->
+<!--            <a href="{% url 'auth:login' %}">войти</a>-->
+<!--            {% endif %}-->
+<!--        </li>-->
+<!--    </ul>-->
+<!--    <a href="#" class="search"></a>-->
+<!--</div>-->
+
+<nav id="navbar-example2" class="navbar navbar-light px-3" style="height: 80px;">
+    <a href="{% url 'index' %}" class="navbar-brand logo"></a>
+    <ul class="nav nav-pills menu">
+        <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.view_name == 'products:products' %}
+            active_lm
+        {% endif %}" href="{% url 'products:products' %}">каталог</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.view_name == 'contacts' %}
+            active_lm
+        {% endif %}" href="{% url 'contacts' %}">контакты</a>
+        </li>
         {% if user.is_authenticated %}
-        <li>
-            <a href="{% url 'auth:edit' %}">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
                 {{ user.first_name|default:'Пользователь' }}
             </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'auth:edit' %}">Профиль</a></li>
+                {% if user.is_staff %}
+                <li>
+                    <hr class="dropdown-divider inline-block">
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{% url 'admin_staff:users' %}">
+                        Менеджер
+                    </a>
+                </li>
+                {% if user.is_superuser %}
+                <li>
+                    <a class="dropdown-item" href="/admin/">
+                        Админка
+                    </a>
+                </li>
+                {% endif %}
+                {% endif %}
+            </ul>
         </li>
         {% endif %}
-        {% if user.is_superuser %}
-        <li>
-            <a href="{% url 'admin_staff:users' %}">
-                Админка
-            </a>
-        </li>
-        {% endif %}
-        <li>
+        <li class="nav-item">
             {% if user.is_authenticated %}
-            <a href="{% url 'auth:logout' %}">выйти</a>
+            <a class="nav-link" href="{% url 'auth:logout' %}">выйти</a>
             {% else %}
-            <a href="{% url 'auth:login' %}">войти</a>
+            <a class="nav-link" href="{% url 'auth:login' %}">войти</a>
             {% endif %}
         </li>
+
     </ul>
-    <a href="#" class="search"></a>
-</div>
+</nav>
+
 
