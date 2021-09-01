@@ -1,10 +1,10 @@
 import json
 import os
-from geekshop.config import SUPER_USER_LOGIN, SUPER_USER_EMAIL, SUPER_USER_PASSWORD
 
 from authapp.models import ShopUser
 from django.core.management.base import BaseCommand
 
+from geekshop.settings import SUPER_USER_LOGIN, SUPER_USER_EMAIL, SUPER_USER_PASSWORD
 from mainapp.models import ProductCategory, Product
 
 JSON_PATH = 'mainapp/json'
