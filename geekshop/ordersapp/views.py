@@ -85,25 +85,6 @@ class OrderItemsCreate(LoginRequiredMixin, CreateView):
 
         return super(OrderItemsCreate, self).form_valid(form)
 
-    # def form_valid(self, form):
-    #     context = self.get_context_data()
-    #     orderitems = context['orderitems']
-    #
-    #     with transaction.atomic():
-    #         form.instance.user = self.request.user
-    #         self.object = form.save()
-    #
-    #         if orderitems.is_valid():
-    #             orderitems.instance = self.object
-    #             orderitems.save()
-    #             Basket.objects.filter(user=self.request.user).delete()
-    #
-    #     # удаляем пустой заказ
-    #     if self.object.get_total_cost() == 0:
-    #         self.object.delete()
-    #
-    #     return super(OrderItemsCreate, self).form_valid(form)
-
 
 class OrderUpdate(LoginRequiredMixin, UpdateView):
     model = Order
@@ -191,7 +172,7 @@ def order_forming_complete(request, pk):
 @receiver(pre_save, sender=OrderItem)
 @receiver(pre_save, sender=Basket)
 def product_quantity_update_save(sender, update_fields, instance, **kwargs):
-   if update_fields is 'quantity' or 'product':
+   if update_fields == 'quantity' or 'product':
        if instance.pk:
            instance.product.quantity -= instance.quantity - sender.get_item(instance.pk).quantity
        else:
