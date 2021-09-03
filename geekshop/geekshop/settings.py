@@ -12,8 +12,11 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 import os, json
 from pathlib import Path
+# import _locale
 
 import environ
+
+# _locale._getdefaultlocale = (lambda *args: ['en_US', 'utf8'])
 
 env = environ.Env()
 environ.Env.read_env()
