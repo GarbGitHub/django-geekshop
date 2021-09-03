@@ -43,10 +43,10 @@ class ProductDetailView(DetailView):
         context['links_menu'] = ProductCategory.objects.filter(is_active=True)
         return self.render_to_response(context)
 
-    @method_decorator(user_passes_test(lambda u: u.is_superuser))
-    def dispatch(self, *args, **kwargs):
-
-        return super().dispatch(*args, **kwargs)
+    # @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    # def dispatch(self, *args, **kwargs):
+    #
+    #     return super().dispatch(*args, **kwargs)
 
 
 # class ProductListView(ListView):
