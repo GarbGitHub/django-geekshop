@@ -18,13 +18,18 @@
             </a>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="{% url 'auth:edit' %}">Профиль</a></li>
+                {% if user.is_active %}
+
                 {% if user.is_staff %}
-                <li>
-                    <hr class="dropdown-divider inline-block">
-                </li>
                 <li>
                     <a class="dropdown-item" href="{% url 'admin_staff:users' %}">
                         Менеджер
+                    </a>
+                </li>
+                {% endif %}
+                <li>
+                    <a class="dropdown-item" href="{% url 'order:orders_list' %}">
+                        Мои заказы
                     </a>
                 </li>
                 {% if user.is_superuser %}

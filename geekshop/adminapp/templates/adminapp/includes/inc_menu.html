@@ -1,3 +1,4 @@
+{% if user.is_staff %}
 <a href="{% url 'admin_staff:categories' %}" class="{% if 'categories' in request.path or 'products' in request.path%}
         active
     {% endif %} nav_link">
@@ -9,7 +10,7 @@
     {% endif %} nav_link">
     <i class='bx bx-user nav_icon'></i>
     <span class="nav_name">Пользователи</span> </a>
-
+{% endif %}
 <a href="{% url 'order:orders_list' %}" class="nav_link">
     <i class='bx bx-bookmark nav_icon'></i>
     <span class="nav_name">Заказы</span> </a>

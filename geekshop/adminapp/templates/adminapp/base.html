@@ -21,11 +21,13 @@
     <div class="header_toggle"><i class='bx bx-menu' id="header-toggle"></i></div>
     <div class=""><i class='bx {{ icon }}'></i> {{ title|title }}</div>
     <div class="header_img">
-         <a href="{% url 'auth:edit' %}">
-        <img src="/media/{{ user.avatar }}"
-             alt="{{ user.username }}"
-             title="{% if user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %}">
-         </a>
+        <a href="{% url 'auth:edit' %}">
+            {% if avatar %}
+            <img src="{{ avatar }}">
+            {% else %}
+            <i class='bx bx-user bx-md'></i>
+            {% endif %}
+        </a>
     </div>
 </header>
 <div class="l-navbar" id="nav-bar">
@@ -49,8 +51,8 @@
 <div class="height-100 bg-light">
     <main>
         <div class="container-fluid pt-3 pb-3">
-                {% block content %}
-                {% endblock %}
+            {% block content %}
+            {% endblock %}
             {% include 'adminapp/includes/inc_pagination.html' %}
         </div>
     </main>
