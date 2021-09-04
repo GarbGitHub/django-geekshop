@@ -29,9 +29,6 @@ class ProductCategory(models.Model):
         verbose_name_plural = 'категории'
 
 
-# python manage.py makemigrations
-# python manage.py migrate
-
 class Product(models.Model):
     category = models.ForeignKey(
         ProductCategory,
