@@ -159,11 +159,19 @@ USE_TZ = False
 
 STATIC_URL = '/static/'  # Путь к статике из браузера
 
-# STATIC_ROOT = '' для боевого сервера
+if DEBUG:  # Локальный сервер
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'geekshop', 'static'),  # Путь к статике на сервере
-)
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, 'geekshop', 'static'),  # Путь к статике на сервере
+    )
+
+else:  # Боевой сервер
+    STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+    STATICFILES_FINDERS = [
+        'django.contrib.staticfiles.finders.FileSystemFinder',
+        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    ]
 
 MEDIA_URL = '/media/'  # Путь к изображениям из браузера
 
