@@ -4,79 +4,82 @@
 
 {% if alert %}
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-  {{ alert }}  <!-- Пользователь успешно добавлен -->
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    {{ alert }}  <!-- Пользователь успешно добавлен -->
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endif %}
 
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Имя пользователя</th>
-                <th>Имя</th>
-                <th>Фамилия</th>
-                <th>Адрес эл. почты</th>
-                <th>Персонал сайта</th>
-                <th>Активный</th>
-                <th>Удалить</th>
-            </tr>
-            </thead>
-            <tfoot>
-            <tr>
-                <th>Имя пользователя</th>
-                <th>Имя</th>
-                <th>Фамилия</th>
-                <th>Адрес эл. почты</th>
-                <th>Персонал сайта</th>
-                <th>Активный</th>
-                <th>Удалить</th>
-            </tr>
-            </tfoot>
-            <tbody>
-            {% for user in objects %}
-            <tr>
-                <td><a href="{% url 'admin_staff:user_update' user.id %}"
-                        {% if not user.is_active %}
-                        class="is-deleted"
-                        {% endif %}
-                >{{ user.username }}</a></td>
-                <td {% if not user.is_active %}
-                        class="is-deleted"
-                        {% endif %}>{{ user.first_name }}</td>
-                <td {% if not user.is_active %}
-                        class="is-deleted"
-                        {% endif %}>{{ user.last_name }}</td>
-                <td {% if not user.is_active %}
-                        class="is-deleted"
-                        {% endif %}>{{ user.email }}</td>
-                <td class="text-center">
-                    {% if user.is_staff %}
-                    <i class="bx bxs-check-circle bx-sm text-success"></i>
-                    {% else %}
-                    <i class="bx bxs-x-circle bx-sm text-muted"></i>
-                    {% endif %}
-                </td>
-                <td class="text-center">
-                    {% if user.is_active %}
-                    <i class="bx bxs-check-circle bx-sm text-success"></i>
-                    {% else %}
-                    <i class="bx bxs-x-circle bx-sm text-muted"></i>
-                    {% endif %}
-                </td>
-                <td class="text-center">
-                    <a href="{% url 'admin_staff:user_delete' user.pk %}"><i
-                            class='bx bxs-x-square bx-sm text-danger'></i></a>
-                </td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <a href="{% url 'adminapp:user_create' %}">
-        <button class="btn btn-outline-primary btn-sm">Создать пользователя</button>
-    </a>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Имя пользователя</th>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Адрес эл. почты</th>
+            <th>Персонал сайта</th>
+            <th>Активный</th>
+            <th>Удалить</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <th>Имя пользователя</th>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Адрес эл. почты</th>
+            <th>Персонал сайта</th>
+            <th>Активный</th>
+            <th>Удалить</th>
+        </tr>
+        </tfoot>
+        <tbody>
+        {% for user in objects %}
+        <tr>
+            <td><a href="{% url 'admin_staff:user_update' user.id %}"
+                   {% if not user.is_active %}
+                   class="is-deleted"
+                   {% endif %}
+            >{{ user.username }}</a></td>
+            <td {% if not user.is_active %}
+                class="is-deleted"
+                {% endif %}>{{ user.first_name }}
+            </td>
+            <td {% if not user.is_active %}
+                class="is-deleted"
+                {% endif %}>{{ user.last_name }}
+            </td>
+            <td {% if not user.is_active %}
+                class="is-deleted"
+                {% endif %}>{{ user.email }}
+            </td>
+            <td class="text-center">
+                {% if user.is_staff %}
+                <i class="bx bxs-check-circle bx-sm text-success"></i>
+                {% else %}
+                <i class="bx bxs-x-circle bx-sm text-muted"></i>
+                {% endif %}
+            </td>
+            <td class="text-center">
+                {% if user.is_active %}
+                <i class="bx bxs-check-circle bx-sm text-success"></i>
+                {% else %}
+                <i class="bx bxs-x-circle bx-sm text-muted"></i>
+                {% endif %}
+            </td>
+            <td class="text-center">
+                <a href="{% url 'admin_staff:user_delete' user.pk %}"><i
+                        class='bx bxs-x-square bx-sm text-danger'></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
+<a href="{% url 'adminapp:user_create' %}">
+    <button class="btn btn-outline-primary btn-sm">Создать пользователя</button>
+</a>
+
 
 
 {% endblock %}
