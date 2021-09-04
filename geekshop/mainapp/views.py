@@ -1,9 +1,5 @@
-from django.contrib.auth.decorators import user_passes_test
-from django.http import Http404
 from django.shortcuts import render, get_object_or_404
-from django.utils.decorators import method_decorator
-from django.views.generic import DetailView, ListView
-
+from django.views.generic import DetailView
 from .models import Product, ProductCategory
 from random import randint
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -42,11 +38,6 @@ class ProductDetailView(DetailView):
         context['title'] = context.get(self, self.object.name)
         context['links_menu'] = ProductCategory.objects.filter(is_active=True)
         return self.render_to_response(context)
-
-    # @method_decorator(user_passes_test(lambda u: u.is_superuser))
-    # def dispatch(self, *args, **kwargs):
-    #
-    #     return super().dispatch(*args, **kwargs)
 
 
 # class ProductListView(ListView):
