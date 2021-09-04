@@ -8,7 +8,7 @@
     {% block css %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
           integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'geekshop/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'authapp/css/style.css' %}">
     <link rel='stylesheet' type="text/css" href="{% static 'adminapp/css/boxicons.min.css' %}">
     {% endblock %}
@@ -17,7 +17,7 @@
 
 <div class="login">
     <div class="px-4 py-3 my-5 text-center">
-        <a href="{% url 'index' %}"><img class="d-block mx-auto mb-4" src="{% static 'img/logo.png' %}" alt=""></a>
+        <a href="{% url 'index' %}"><img class="d-block mx-auto mb-4" src="{% static 'geekshop/img/logo.png' %}" alt=""></a>
         <div class="h2 mb-4 text-center head">
             {{ title }}
         </div>
