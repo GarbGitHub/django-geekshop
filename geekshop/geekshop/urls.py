@@ -21,8 +21,6 @@ from mainapp import urls as main_urls
 from authapp import urls as auth_urls
 
 from basketapp import urls as basket_urls
-# path('basket/', include(basket_urls), namespace='basket'),
-# TypeError: _path() got an unexpected keyword argument 'namespace'
 
 from . import views
 
@@ -32,17 +30,17 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('admin_staff/', include(admin_staff_urls, namespace='admin_staff'), name='admin_staff'),
-
     path('', views.index, name='index'),
     path('products/', include(main_urls, namespace='products')),
     path('auth/', include(auth_urls, namespace='auth')),
-    # path('basket/', include('basketapp.urls', namespace='basket')),
-    path('basket/', include(basket_urls, namespace='basket')),  # error
-
+    path('basket/', include(basket_urls, namespace='basket')),
     path('contacts/', views.contacts, name='contacts'),
     path('order/', include('ordersapp.urls', namespace='order')),
     path('', include('social_django.urls', namespace='social')),
 ]
 
 if settings.DEBUG:
+    import debug_toolbar
+
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += [path('__debug__/', include(debug_toolbar.urls))]
