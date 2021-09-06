@@ -23,6 +23,7 @@ def get_same_product(hot_product):
     :return: список продуктов
     """
     same_products = Product.objects.filter(category=hot_product.category).exclude(pk=hot_product.pk)[:3]
+    # same_products = Product.objects.filter(is_active=True).select_relatede('category').exclude(pk=hot_product.pk)[:3]
 
     return same_products
 
