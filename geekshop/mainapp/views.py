@@ -10,7 +10,7 @@ def get_hot_product():
     Генерация случайного продукта
     :return: случайный продукт
     """
-    products = Product.objects.all()
+    products = Product.objects.filter(is_active=True).all()
     # return random.sample(list(products), 1)[0]  # создан лишний объект list
 
     return products[randint(0, len(products) - 1)]
