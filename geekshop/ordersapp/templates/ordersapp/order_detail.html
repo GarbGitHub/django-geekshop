@@ -5,7 +5,7 @@
 {% block content %}
 {% include 'ordersapp/includes/inc_order_summary.html' %}
 <div class="basket_list">
-    {% for item in object.orderitems.select_related %}
+    {% for item in object.get_items_cached %}
     <div class="basket_record">
         <img src="{{ item.product.image|media_folder_products }}"
              alt="{{ item.product.short_desc }}">
