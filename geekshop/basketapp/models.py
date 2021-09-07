@@ -1,3 +1,5 @@
+from functools import cached_property
+
 from django.db import models
 from django.conf import settings
 
@@ -33,6 +35,10 @@ class Basket(models.Model):
         auto_now_add=True
     )
 
+    @cached_property
+    def get_items_cached(self):
+        return self.user.basket.select_related()
+
     # Здесь необходим этот метод
     @staticmethod
     def get_item(pk):
@@ -50,7 +56,8 @@ class Basket(models.Model):
         """
         :return: total quantity for user
         """
-        _items = Basket.objects.filter(user=self.user)
+        _items = self.get_items_cached  # Забираем из кеша
+        # _items = Basket.objects.filter(user=self.user)
         _total_quantity = sum(list(map(lambda x: x.quantity, _items)))
         return _total_quantity
 
@@ -59,7 +66,8 @@ class Basket(models.Model):
         """
         :return: total cost for user
         """
-        _items = Basket.objects.filter(user=self.user)
+        _items = self.get_items_cached  # Забираем из кеша
+        # _items = Basket.objects.filter(user=self.user)
         _total_cost = sum(list(map(lambda x: x.product_cost, _items)))
         return _total_cost
 
