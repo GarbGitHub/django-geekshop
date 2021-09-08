@@ -2,11 +2,13 @@ from django.shortcuts import render
 
 from basketapp.models import Basket
 from mainapp.models import Product
+from mainapp.views import get_products
 
 
 def index(request):
     title = 'geekshop'
-    products = Product.objects.filter(is_active=True, category__is_active=True)[:4]
+    products = get_products()[:4]  # Wow! 0 queries
+    # products = Product.objects.filter(is_active=True, category__is_active=True)[:4]
     # products = Product.objects.filter(is_active=True, category__is_active=True).select_related('category')[:4]
 
     basket = []
