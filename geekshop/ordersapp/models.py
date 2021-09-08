@@ -89,6 +89,10 @@ class Order(models.Model):
             'total_quantity': sum(list(map(lambda x: x.quantity, items)))
         }
 
+    def get_name_order(self):
+        print('Заказ',type(self.updated))
+        return f'Заказ № {self.pk} от {self.created.strftime("%d.%m.%Y")}'
+
 
 class OrderItem(models.Model):
     objects = OrderItemQuerySet.as_manager()
