@@ -1,7 +1,5 @@
 from django.shortcuts import render
-
 from basketapp.models import Basket
-from mainapp.models import Product
 from mainapp.views import get_products
 
 

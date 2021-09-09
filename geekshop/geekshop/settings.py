@@ -267,6 +267,8 @@ SOCIAL_AUTH_ODNOKLASSNIKI_OAUTH2_SESSION_SECRET_KEY = env('SOCIAL_AUTH_ODNOKLASS
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 # Кэширование Memcached
+
+LOW_CACHE = True
 if os.name == 'posix':
    CACHE_MIDDLEWARE_ALIAS = 'default'
    CACHE_MIDDLEWARE_SECONDS = 60
@@ -279,5 +281,4 @@ if os.name == 'posix':
        }
    }
 
-LOW_CACHE = True
 

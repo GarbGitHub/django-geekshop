@@ -15,6 +15,7 @@ def get_links_menu():
         if links_menu is None:
             links_menu = ProductCategory.objects.filter(is_active=True)
             cache.set(key, links_menu)
+            print(cache)
         return links_menu
     else:
         return ProductCategory.objects.filter(is_active=True)
