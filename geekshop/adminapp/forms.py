@@ -4,7 +4,8 @@ from authapp.forms import ShopUserEditForm
 from mainapp.models import ProductCategory, Product
 
 
-class ShopUserRegisterForm(ShopUserEditForm):  # Наследуемся от ShopUserEditForm
+class ShopUserRegisterForm(ShopUserEditForm):  # Наследуемся от ShopUserEditFor
+
     class Meta:
         model = ShopUser
         fields = ('username', 'first_name', 'last_name', 'email', 'age', 'avatar', 'is_active', 'is_staff')
@@ -19,9 +20,12 @@ class ShopUserRegisterForm(ShopUserEditForm):  # Наследуемся от Sho
 
 
 class ProductCategoryEditForm(forms.ModelForm):
+    discount = forms.IntegerField(label='Скидка', required=False, min_value=0, max_value=90, initial=0)
+
     class Meta:
         model = ProductCategory
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ()  # кортеж с исключенными из отображения полями
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -32,6 +36,7 @@ class ProductCategoryEditForm(forms.ModelForm):
 
 
 class ProductEditForm(forms.ModelForm):
+
     class Meta:
         model = Product
         fields = '__all__'
