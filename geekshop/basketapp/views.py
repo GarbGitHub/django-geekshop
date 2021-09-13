@@ -39,7 +39,7 @@ def basket_add(request, pk):
     # Если добавление товара со страницы логина
     if 'login' in request.META.get('HTTP_REFERER'):
         # Возвращаемся на страницу с товаром
-        return HttpResponseRedirect(reverse('products:category', args=[pk]))
+        return HttpResponseRedirect(reverse('products:product', args=[pk]))
     # Иначе на реферальную страницу
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
