@@ -94,7 +94,7 @@ class Product(models.Model):
     is_active = models.BooleanField(db_index=True, verbose_name='активный', default=True)
 
     def __str__(self):
-        return f'{self.name} id: {self.id} -- {self.created}'
+        return f'{self.name} id: {self.pk} -- {self.created}'
 
     class Meta:
         verbose_name = 'продукт',
